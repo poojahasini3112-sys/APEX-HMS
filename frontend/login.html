@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexCare Hospital - Secure Authentication Portal</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #091e3a 0%, #1e293b 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      width: 100%;
+      max-width: 460px;
+      padding: 40px;
+      backdrop-filter: blur(12px);
+    }
+    .demo-pill {
+      font-size: 0.76rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .demo-pill:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="text-center mb-4">
+    <div class="brand-icon mx-auto mb-3" style="width: 58px; height: 58px; font-size: 28px;">
+      <i class="bi bi-hospital"></i>
+    </div>
+    <h3 class="fw-bold text-dark mb-1">ApexCare Hospital</h3>
+    <p class="text-muted small">Advanced Hospital Management System Portal</p>
+  </div>
+
+  <div id="login-alert" class="alert alert-danger d-none py-2" role="alert"></div>
+
+  <form id="login-form">
+    <div class="mb-3">
+      <label class="form-label small fw-semibold text-secondary">Username or Email</label>
+      <div class="input-group">
+        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person"></i></span>
+        <input type="text" id="username" class="form-control border-start-0" placeholder="Enter username" value="admin" required>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <div class="d-flex justify-content-between">
+        <label class="form-label small fw-semibold text-secondary">Password</label>
+        <span class="small text-muted">Default: Admin@123</span>
+      </div>
+      <div class="input-group">
+        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-lock"></i></span>
+        <input type="password" id="password" class="form-control border-start-0" placeholder="Enter password" value="Admin@123" required>
+      </div>
+    </div>
+
+    <button type="submit" id="btn-login" class="btn btn-primary w-100 py-2 fw-semibold shadow-sm mb-3" style="background: linear-gradient(135deg, #0284c7, #0d9488); border: none;">
+      <i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Portal
+    </button>
+  </form>
+
+  <div class="mt-4 pt-3 border-top">
+    <p class="small text-muted fw-semibold mb-2">⚡ Quick Fill Demo Accounts:</p>
+    <div class="d-flex flex-wrap gap-2">
+      <span class="demo-pill" onclick="setDemo('admin', 'Admin@123')">👑 Admin</span>
+      <span class="demo-pill" onclick="setDemo('dr.vikram', 'Admin@123')">🩺 Cardiologist</span>
+      <span class="demo-pill" onclick="setDemo('dr.meera', 'Admin@123')">🧠 Neurologist</span>
+      <span class="demo-pill" onclick="setDemo('nurse.ananya', 'Admin@123')">💉 Nurse</span>
+      <span class="demo-pill" onclick="setDemo('pharm.suresh', 'Admin@123')">💊 Pharmacist</span>
+      <span class="demo-pill" onclick="setDemo('recep.kiran', 'Admin@123')">📋 Receptionist</span>
+      <span class="demo-pill" onclick="setDemo('acct.sunil', 'Admin@123')">💳 Accountant</span>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <small class="text-muted">Powered by Node.js & MySQL 8.0 InnoDB Database</small>
+  </div>
+</div>
+
+<script>
+  function setDemo(user, pass) {
+    document.getElementById('username').value = user;
+    document.getElementById('password').value = pass;
+    document.getElementById('login-alert').classList.add('d-none');
+  }
+
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const alertBox = document.getElementById('login-alert');
+    const btn = document.getElementById('btn-login');
+    alertBox.classList.add('d-none');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Authenticating...';
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+
+      if (data.success && data.token) {
+        localStorage.setItem('apexcare_token', data.token);
+        localStorage.setItem('apexcare_user', JSON.stringify(data.user));
+        window.location.href = '/index.html';
+      } else {
+        alertBox.textContent = data.message || 'Login failed. Please check your credentials.';
+        alertBox.classList.remove('d-none');
+      }
+    } catch (err) {
+      alertBox.textContent = 'Server connection error. Ensure backend is running.';
+      alertBox.classList.remove('d-none');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i> Sign In to Portal';
+    }
+  });
+</script>
+</body>
+</html>

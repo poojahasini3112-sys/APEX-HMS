@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexCare - Advanced Hospital Management System</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app-layout">
+  <!-- =========================================================
+       SIDEBAR NAVIGATION
+       ========================================================= -->
+  <aside class="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <i class="bi bi-hospital"></i>
+      </div>
+      <div class="brand-text">
+        <h5>ApexCare HMS</h5>
+        <span>Clinical Enterprise</span>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="menu-category">Overview</li>
+      <li class="menu-item">
+        <a href="#dashboard" class="menu-link active" onclick="navigate('dashboard')">
+          <i class="bi bi-grid-1x2-fill"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li class="menu-category">Clinical Management</li>
+      <li class="menu-item">
+        <a href="#patients" class="menu-link" onclick="navigate('patients')">
+          <i class="bi bi-people-fill"></i>
+          <span>Patients (Module A)</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="#appointments" class="menu-link" onclick="navigate('appointments')">
+          <i class="bi bi-calendar-check-fill"></i>
+          <span>Appointments</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="#admissions" class="menu-link" onclick="navigate('admissions')">
+          <i class="bi bi-heart-pulse-fill"></i>
+          <span>Admissions & Beds</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="#records" class="menu-link" onclick="navigate('records')">
+          <i class="bi bi-journal-medical"></i>
+          <span>Medical Records & Rx</span>
+        </a>
+      </li>
+
+      <li class="menu-category">Hospital Facilities</li>
+      <li class="menu-item">
+        <a href="#doctors" class="menu-link" onclick="navigate('doctors')">
+          <i class="bi bi-person-badge-fill"></i>
+          <span>Doctors & Staff</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="#departments" class="menu-link" onclick="navigate('departments')">
+          <i class="bi bi-diagram-3-fill"></i>
+          <span>Departments</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="#laboratory" class="menu-link" onclick="navigate('laboratory')">
+          <i class="bi bi-eyedropper"></i>
+          <span>Laboratory & Reports</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="#pharmacy" class="menu-link" onclick="navigate('pharmacy')">
+          <i class="bi bi-capsule"></i>
+          <span>Pharmacy & Stocks</span>
+        </a>
+      </li>
+
+      <li class="menu-category">Finance & Security</li>
+      <li class="menu-item">
+        <a href="#billing" class="menu-link" onclick="navigate('billing')">
+          <i class="bi bi-receipt-cutoff"></i>
+          <span>Billing & Insurance</span>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="#audit" class="menu-link" onclick="navigate('audit')">
+          <i class="bi bi-shield-check"></i>
+          <span>Users & Audit Trail</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-user">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebar-avatar">A</div>
+        <div class="user-meta">
+          <h6 id="sidebar-username">Administrator</h6>
+          <small id="sidebar-role" class="badge bg-primary-subtle text-primary">Admin</small>
+        </div>
+      </div>
+      <button class="btn btn-sm btn-outline-light border-0" onclick="logout()" title="Sign Out">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- =========================================================
+       MAIN WORKSPACE
+       ========================================================= -->
+  <main class="app-main">
+    <!-- Topbar -->
+    <header class="app-topbar">
+      <div>
+        <h4 id="page-title" class="mb-0 fw-bold text-dark">Executive Dashboard</h4>
+        <small id="page-subtitle" class="text-muted">Real-time hospital operations overview & KPIs</small>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="btn btn-primary d-flex align-items-center gap-2 fw-semibold" onclick="openPatientModal()" style="background: linear-gradient(135deg, #0284c7, #0d9488); border: none;">
+          <i class="bi bi-person-plus-fill"></i>
+          <span>Register Patient</span>
+        </button>
+        <button class="btn btn-outline-primary d-flex align-items-center gap-2 fw-semibold" onclick="openAppointmentModal()">
+          <i class="bi bi-calendar-plus"></i>
+          <span>Book Appointment</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body Container -->
+    <div class="page-container">
+      <div id="dynamic-content">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- =========================================================
+     MODALS
+     ========================================================= -->
+
+<!-- Modal: Register Patient -->
+<div class="modal fade" id="modal-patient" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-primary"><i class="bi bi-person-plus-fill me-2"></i> Register New Patient</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="form-patient" onsubmit="handlePatientSubmit(event)">
+        <div class="modal-body p-4">
+          <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-info-circle me-1"></i> Basic Demographics</h6>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">First Name *</label>
+              <input type="text" id="p-first-name" class="form-control" required placeholder="e.g. Rahul">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Last Name *</label>
+              <input type="text" id="p-last-name" class="form-control" required placeholder="e.g. Sharma">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Date of Birth *</label>
+              <input type="date" id="p-dob" class="form-control" required value="1995-05-15">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Gender *</label>
+              <select id="p-gender" class="form-select" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Blood Group *</label>
+              <select id="p-blood" class="form-select" required>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Phone Number *</label>
+              <input type="tel" id="p-phone" class="form-control" required placeholder="+91-9876543210">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Email</label>
+              <input type="email" id="p-email" class="form-control" placeholder="rahul.sharma@example.com">
+            </div>
+            <div class="col-12">
+              <label class="form-label small fw-semibold">Residential Address *</label>
+              <textarea id="p-address" class="form-control" rows="2" required placeholder="Full street address, city, pin code"></textarea>
+            </div>
+          </div>
+
+          <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-telephone-fill me-1"></i> Emergency Contact (Table 2)</h6>
+          <div class="row g-3 mb-4">
+            <div class="col-md-5">
+              <label class="form-label small fw-semibold">Contact Person Name</label>
+              <input type="text" id="p-ec-name" class="form-control" placeholder="e.g. Priya Sharma">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold">Relationship</label>
+              <input type="text" id="p-ec-rel" class="form-control" placeholder="e.g. Spouse / Parent">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Contact Phone</label>
+              <input type="tel" id="p-ec-phone" class="form-control" placeholder="+91-9876500000">
+            </div>
+          </div>
+
+          <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-shield-exclamation me-1"></i> Clinical History & Allergies (Tables 3 & 4)</h6>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Known Pre-existing Condition</label>
+              <input type="text" id="p-condition" class="form-control" placeholder="e.g. Mild Hypertension">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Known Allergen</label>
+              <input type="text" id="p-allergen" class="form-control" placeholder="e.g. Penicillin">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary px-4 fw-semibold">Save Patient Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Schedule Appointment -->
+<div class="modal fade" id="modal-appointment" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-primary"><i class="bi bi-calendar-plus me-2"></i> Book Doctor Appointment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="form-appointment" onsubmit="handleAppointmentSubmit(event)">
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Select Patient *</label>
+            <select id="appt-patient" class="form-select" required></select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Consulting Doctor *</label>
+            <select id="appt-doctor" class="form-select" required></select>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label small fw-semibold">Date *</label>
+              <input type="date" id="appt-date" class="form-control" required>
+            </div>
+            <div class="col-6">
+              <label class="form-label small fw-semibold">Time Slot *</label>
+              <select id="appt-time" class="form-select" required>
+                <option value="09:00:00">09:00 AM</option>
+                <option value="10:00:00">10:00 AM</option>
+                <option value="11:30:00">11:30 AM</option>
+                <option value="14:00:00">02:00 PM</option>
+                <option value="15:30:00">03:30 PM</option>
+                <option value="16:30:00">04:30 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Reason for Consultation *</label>
+            <textarea id="appt-reason" class="form-control" rows="2" required placeholder="Describe chief complaint or symptoms..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary px-4 fw-semibold">Confirm Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Admit Patient & Allocate Bed -->
+<div class="modal fade" id="modal-admission" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-primary"><i class="bi bi-hospital me-2"></i> Inpatient Admission & Bed Allocation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="form-admission" onsubmit="handleAdmissionSubmit(event)">
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Select Patient *</label>
+            <select id="adm-patient" class="form-select" required></select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Attending Doctor *</label>
+            <select id="adm-doctor" class="form-select" required></select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Admission Type *</label>
+            <select id="adm-type" class="form-select" required>
+              <option value="Elective">Elective</option>
+              <option value="Emergency">Emergency</option>
+              <option value="Urgent">Urgent</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Select Available Bed *</label>
+            <select id="adm-bed" class="form-select" required></select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Admission Reason / Diagnosis *</label>
+            <textarea id="adm-reason" class="form-control" rows="2" required placeholder="Reason for inpatient admission..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary px-4 fw-semibold">Admit Patient</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Create Medical Record with Diagnosis and Prescription -->
+<div class="modal fade" id="modal-medical-record" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-primary"><i class="bi bi-journal-medical me-2"></i> Clinical Encounter & Prescription</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="form-medical-record" onsubmit="handleMedicalRecordSubmit(event)">
+        <div class="modal-body p-4">
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Patient *</label>
+              <select id="mr-patient" class="form-select" required></select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Doctor *</label>
+              <select id="mr-doctor" class="form-select" required></select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Symptoms & Clinical Presentation *</label>
+            <textarea id="mr-symptoms" class="form-control" rows="2" required placeholder="Chief complaint, duration, onset..."></textarea>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Physical Examination</label>
+              <textarea id="mr-exam" class="form-control" rows="2" placeholder="BP, pulse, heart sounds, chest..."></textarea>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Treatment Notes</label>
+              <textarea id="mr-notes" class="form-control" rows="2" placeholder="Clinical assessment, advised therapy..."></textarea>
+            </div>
+          </div>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Primary Diagnosis (ICD Catalog) *</label>
+              <select id="mr-diagnosis" class="form-select" required></select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Follow-up Date</label>
+              <input type="date" id="mr-followup" class="form-control">
+            </div>
+          </div>
+
+          <h6 class="fw-bold text-secondary mb-2"><i class="bi bi-capsule me-1"></i> Prescribe Medication (M:N Prescription_Detail)</h6>
+          <div class="row g-2 mb-2">
+            <div class="col-md-4">
+              <label class="form-label small fw-semibold">Medicine</label>
+              <select id="rx-medicine" class="form-select"></select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold">Dosage</label>
+              <input type="text" id="rx-dosage" class="form-control" placeholder="e.g. 500mg">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label small fw-semibold">Frequency</label>
+              <input type="text" id="rx-frequency" class="form-control" placeholder="e.g. Twice daily">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label small fw-semibold">Days</label>
+              <input type="number" id="rx-days" class="form-control" value="7" min="1">
+            </div>
+          </div>
+          <div class="mb-2">
+            <input type="text" id="rx-instructions" class="form-control" placeholder="Special patient instructions (e.g. take after food)...">
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary px-4 fw-semibold">Save Clinical Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Lab Order -->
+<div class="modal fade" id="modal-lab-order" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-primary"><i class="bi bi-eyedropper me-2"></i> Order Laboratory Investigation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="form-lab-order" onsubmit="handleLabOrderSubmit(event)">
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Patient *</label>
+            <select id="lo-patient" class="form-select" required></select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Referring Doctor *</label>
+            <select id="lo-doctor" class="form-select" required></select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Test Name *</label>
+            <select id="lo-test" class="form-select" required></select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Priority</label>
+            <select id="lo-priority" class="form-select">
+              <option value="Routine">Routine</option>
+              <option value="Urgent">Urgent</option>
+              <option value="STAT">STAT (Emergency)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary px-4 fw-semibold">Submit Lab Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Upload Lab Report -->
+<div class="modal fade" id="modal-lab-report" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-primary"><i class="bi bi-file-earmark-medical me-2"></i> Enter Laboratory Findings</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="form-lab-report" onsubmit="handleLabReportSubmit(event)">
+        <div class="modal-body p-4">
+          <input type="hidden" id="lr-order-id">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Conducted By (Technician) *</label>
+            <select id="lr-tech" class="form-select" required>
+              <option value="10">Divya Iyer (Senior Lab Technician)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Result Value *</label>
+            <textarea id="lr-value" class="form-control" rows="2" required placeholder="Quantitative / qualitative finding..."></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Status / Diagnostic Finding *</label>
+            <select id="lr-status" class="form-select" required>
+              <option value="Normal">Normal</option>
+              <option value="Abnormal">Abnormal</option>
+              <option value="Critical">Critical</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Clinical Interpretation / Notes</label>
+            <textarea id="lr-comments" class="form-control" rows="2" placeholder="Pathologist comments..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary px-4 fw-semibold">Finalize Report</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Record Payment -->
+<div class="modal fade" id="modal-payment" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-primary"><i class="bi bi-credit-card me-2"></i> Process Bill Payment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="form-payment" onsubmit="handlePaymentSubmit(event)">
+        <div class="modal-body p-4">
+          <input type="hidden" id="pay-bill-id">
+          <div class="alert alert-info py-2 small mb-3" id="pay-bill-info"></div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Payment Amount (₹) *</label>
+            <input type="number" id="pay-amount" class="form-control" step="0.01" min="1" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Payment Method *</label>
+            <select id="pay-method" class="form-select" required>
+              <option value="UPI">UPI (GooglePay / PhonePe / Paytm)</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Debit Card">Debit Card</option>
+              <option value="Cash">Cash at Counter</option>
+              <option value="Net Banking">Net Banking</option>
+              <option value="Insurance">Insurance Cashless</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Transaction Reference ID</label>
+            <input type="text" id="pay-ref" class="form-control" placeholder="e.g. UPI-99882211 or leave empty for auto-gen">
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success px-4 fw-semibold">Confirm Payment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Patient 360 Degree View -->
+<div class="modal fade" id="modal-patient-details" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-dark"><i class="bi bi-person-bounding-box text-primary me-2"></i> Patient Clinical 360° Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-4" id="patient-details-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container for Notifications -->
+<div class="toast-container" id="toast-wrapper"></div>
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Application JS -->
+<script src="js/app.js"></script>
+</body>
+</html>
