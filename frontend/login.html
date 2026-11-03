@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ApexCare Hospital - Secure Authentication Portal</title>
+  <title>MediTrack Hospital - Secure Authentication Portal</title>
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,7 +55,7 @@
     <div class="brand-icon mx-auto mb-3" style="width: 58px; height: 58px; font-size: 28px;">
       <i class="bi bi-hospital"></i>
     </div>
-    <h3 class="fw-bold text-dark mb-1">ApexCare Hospital</h3>
+    <h3 class="fw-bold text-dark mb-1">MediTrack Hospital</h3>
     <p class="text-muted small">Advanced Hospital Management System Portal</p>
   </div>
 
@@ -131,8 +131,8 @@
       const data = await res.json();
 
       if (data.success && data.token) {
-        localStorage.setItem('apexcare_token', data.token);
-        localStorage.setItem('apexcare_user', JSON.stringify(data.user));
+        localStorage.setItem('meditrack_token', data.token);
+        localStorage.setItem('meditrack_user', JSON.stringify(data.user));
         window.location.href = '/index.html';
       } else {
         alertBox.textContent = data.message || 'Login failed. Please check your credentials.';

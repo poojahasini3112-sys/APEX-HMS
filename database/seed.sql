@@ -58,19 +58,19 @@ INSERT INTO Department (Department_ID, Department_Name, Description, Head_Of_Dep
 (8, 'Pathology & Lab', 'Laboratory testing, clinical biochemistry, and microbiological analysis', NULL, 'Basement 2', '+91-9876543008');
 
 INSERT INTO Staff (Staff_ID, First_Name, Last_Name, Email, Phone, Role, Department_ID, Date_Of_Joining, Salary, Status) VALUES
-(1, 'Vikram', 'Aditya', 'vikram.aditya@apexcare.org', '+91-9811122201', 'Doctor', 1, '2021-03-15', 185000.00, 'Active'),
-(2, 'Meera', 'Nambiar', 'meera.nambiar@apexcare.org', '+91-9811122202', 'Doctor', 2, '2020-07-01', 190000.00, 'Active'),
-(3, 'Rajesh', 'Khanna', 'rajesh.khanna@apexcare.org', '+91-9811122203', 'Doctor', 3, '2019-11-10', 175000.00, 'Active'),
-(4, 'Sneha', 'Deshmukh', 'sneha.deshmukh@apexcare.org', '+91-9811122204', 'Doctor', 4, '2022-01-20', 160000.00, 'Active'),
-(5, 'Arun', 'Venkatesh', 'arun.venkatesh@apexcare.org', '+91-9811122205', 'Doctor', 5, '2018-05-12', 170000.00, 'Active'),
-(6, 'Ananya', 'Sharma', 'ananya.sharma@apexcare.org', '+91-9811122206', 'Nurse', 1, '2022-06-15', 55000.00, 'Active'),
-(7, 'Pooja', 'Menon', 'pooja.menon@apexcare.org', '+91-9811122207', 'Nurse', 6, '2021-09-01', 58000.00, 'Active'),
-(8, 'Kavita', 'Reddy', 'kavita.reddy@apexcare.org', '+91-9811122208', 'Nurse', 3, '2023-02-10', 52000.00, 'Active'),
-(9, 'Suresh', 'Babu', 'suresh.babu@apexcare.org', '+91-9811122209', 'Pharmacist', 5, '2020-04-18', 65000.00, 'Active'),
-(10, 'Divya', 'Iyer', 'divya.iyer@apexcare.org', '+91-9811122210', 'Lab Technician', 8, '2021-11-25', 60000.00, 'Active'),
-(11, 'Kiran', 'Verma', 'kiran.verma@apexcare.org', '+91-9811122211', 'Receptionist', 5, '2023-03-01', 40000.00, 'Active'),
-(12, 'Amit', 'Trivedi', 'amit.trivedi@apexcare.org', '+91-9811122212', 'Admin', 5, '2018-01-10', 95000.00, 'Active'),
-(13, 'Sunil', 'Patil', 'sunil.patil@apexcare.org', '+91-9811122213', 'Accountant', 5, '2021-08-14', 70000.00, 'Active');
+(1, 'Vikram', 'Aditya', 'vikram.aditya@meditrack.org', '+91-9811122201', 'Doctor', 1, '2021-03-15', 185000.00, 'Active'),
+(2, 'Meera', 'Nambiar', 'meera.nambiar@meditrack.org', '+91-9811122202', 'Doctor', 2, '2020-07-01', 190000.00, 'Active'),
+(3, 'Rajesh', 'Khanna', 'rajesh.khanna@meditrack.org', '+91-9811122203', 'Doctor', 3, '2019-11-10', 175000.00, 'Active'),
+(4, 'Sneha', 'Deshmukh', 'sneha.deshmukh@meditrack.org', '+91-9811122204', 'Doctor', 4, '2022-01-20', 160000.00, 'Active'),
+(5, 'Arun', 'Venkatesh', 'arun.venkatesh@meditrack.org', '+91-9811122205', 'Doctor', 5, '2018-05-12', 170000.00, 'Active'),
+(6, 'Ananya', 'Sharma', 'ananya.sharma@meditrack.org', '+91-9811122206', 'Nurse', 1, '2022-06-15', 55000.00, 'Active'),
+(7, 'Pooja', 'Menon', 'pooja.menon@meditrack.org', '+91-9811122207', 'Nurse', 6, '2021-09-01', 58000.00, 'Active'),
+(8, 'Kavita', 'Reddy', 'kavita.reddy@meditrack.org', '+91-9811122208', 'Nurse', 3, '2023-02-10', 52000.00, 'Active'),
+(9, 'Suresh', 'Babu', 'suresh.babu@meditrack.org', '+91-9811122209', 'Pharmacist', 5, '2020-04-18', 65000.00, 'Active'),
+(10, 'Divya', 'Iyer', 'divya.iyer@meditrack.org', '+91-9811122210', 'Lab Technician', 8, '2021-11-25', 60000.00, 'Active'),
+(11, 'Kiran', 'Verma', 'kiran.verma@meditrack.org', '+91-9811122211', 'Receptionist', 5, '2023-03-01', 40000.00, 'Active'),
+(12, 'Amit', 'Trivedi', 'amit.trivedi@meditrack.org', '+91-9811122212', 'Admin', 5, '2018-01-10', 95000.00, 'Active'),
+(13, 'Sunil', 'Patil', 'sunil.patil@meditrack.org', '+91-9811122213', 'Accountant', 5, '2021-08-14', 70000.00, 'Active');
 
 -- Update Department Heads
 UPDATE Department SET Head_Of_Department = 1 WHERE Department_ID = 1;
@@ -274,7 +274,7 @@ INSERT INTO Prescription_Detail (Prescription_Detail_ID, Prescription_ID, Medici
 INSERT INTO Supplier (Supplier_ID, Supplier_Name, Contact_Person, Phone, Email, Address, Status) VALUES
 (1, 'MedPharma Distributors Pvt Ltd', 'Ramesh Kothari', '+91-9845012345', 'ramesh@medpharma.in', 'Building 4B, Peenya Industrial Area, Bangalore', 'Active'),
 (2, 'Global Healthcare Logistics', 'Sunita Rao', '+91-9845012346', 'orders@globalhealthlog.com', 'Plot 29, Turbhe MIDC, Navi Mumbai', 'Active'),
-(3, 'Apex Lifesciences Wholesale', 'Harish Chandra', '+91-9845012347', 'harish@apexlifesciences.org', '18 Industrial Estate, Guindy, Chennai', 'Active'),
+(3, 'MediTrack Lifesciences Wholesale', 'Harish Chandra', '+91-9845012347', 'harish@meditracklifesciences.org', '18 Industrial Estate, Guindy, Chennai', 'Active'),
 (4, 'Zenith Surgical & Pharma Supplies', 'Mohit Jain', '+91-9845012348', 'sales@zenithsurg.com', '72 Okhla Phase III, New Delhi', 'Active'),
 (5, 'LifeLine Medical Equipment Ltd', 'Pooja Agarwal', '+91-9845012349', 'care@lifelinemed.in', '54 Somajiguda, Hyderabad', 'Active');
 

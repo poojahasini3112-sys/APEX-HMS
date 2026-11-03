@@ -1,13 +1,13 @@
 /**
- * ApexCare Hospital Management System - Core Frontend Application
+ * MediTrack Hospital Management System - Core Frontend Application
  * Fully connects UI with Express Backend & MySQL 8.0 Database
  */
 
 const API_BASE = '/api';
 
 // Application State
-let currentUser = JSON.parse(localStorage.getItem('apexcare_user') || '{"username":"admin","role":"Admin","name":"Amit Trivedi"}');
-let currentToken = localStorage.getItem('apexcare_token') || '';
+let currentUser = JSON.parse(localStorage.getItem('meditrack_user') || '{"username":"admin","role":"Admin","name":"Amit Trivedi"}');
+let currentToken = localStorage.getItem('meditrack_token') || '';
 
 // Global references for dropdowns
 let patientsCache = [];
@@ -44,8 +44,8 @@ function setupUserHeader() {
 }
 
 function logout() {
-  localStorage.removeItem('apexcare_token');
-  localStorage.removeItem('apexcare_user');
+  localStorage.removeItem('meditrack_token');
+  localStorage.removeItem('meditrack_user');
   window.location.href = '/login.html';
 }
 
@@ -1460,7 +1460,7 @@ async function viewBillDetails(billId) {
     <div class="p-4 border rounded-3 bg-white">
       <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
         <div>
-          <h4 class="fw-bold text-primary mb-0">ApexCare Hospital</h4>
+          <h4 class="fw-bold text-primary mb-0">MediTrack Hospital</h4>
           <div class="text-muted small">Tax Invoice & Clinical Bill #${b.Bill_ID}</div>
         </div>
         <div class="text-end">
